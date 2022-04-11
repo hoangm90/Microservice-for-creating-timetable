@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - 5003:80
+    depends_on:
+      - divider
+
+  divider:
+    image: divider
+    build:
+      context: ./divider
+    depends_on:
+      - comparer
+    
+  comparer:
+    image: comparer
+    build:
+      context: ./comparer
+    depends_on:
+      - painter
+    
+  painter:
+    image: painter
+    build:
+      context: ./painter
