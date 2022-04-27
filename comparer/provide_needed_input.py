@@ -40,8 +40,7 @@ def create_lessons_dictionary(lessons_raw):
         current_lesson['teacherIDs'] = []
         current_lesson['groupIDs'] = []
         current_lesson['classroomIDs'] = []
-        current_lesson['color'] = -1
-        current_lesson['chosenClassroomId'] = ""
+        
         # save the information about the teachers that must present to the dictionary
         for teacher_id in lesson_raw.get("teachersIds"):
             current_lesson['teacherIDs'].append(teacher_id)

@@ -14,11 +14,12 @@ def random_sorting(subjects):
 
     # create list that classifies lessons according to subjects
     ls = []
-    ls.append([])
-    for lesson in subjects["no_subject"]:
-        ls[0].append(lesson)
-    random.shuffle(ls[0])
-    i=1
+    i = 0
+    if len(subjects["no_subject"]) > 0:
+        ls.append([])
+        ls[0].extend(subjects["no_subject"])
+        random.shuffle(ls[0])
+        i=1
     for sub in subjects:
         if sub == "no_subject":
             continue
@@ -31,16 +32,21 @@ def random_sorting(subjects):
       
             for tp in topic_list:
                 ls1 = []
-                for lesson in subjects[sub][tp]:
-                    ls1.append(lesson)
+                ls1.extend(subjects[sub][tp])
                 random.shuffle(ls1)
-                for lesson in ls1:
-                    ls[i].append(lesson)
+                ls[i].extend(ls1)
             i += 1
 
     # create the dictionary that contain the order of lessons in each subject according to topics 
     dict_previous = {}
-    for i in range(len(ls)):
+    start_index = 0
+    # lessons that don't belong to any subject don't have order
+    if len(subjects["no_subject"]) > 0:
+        for j in range(len(ls[0])):
+            dict_previous[ls[0][j]] = -1
+        start_index = 1
+    # lessons that belong to subjects need to follow order of topics
+    for i in range(start_index, len(ls)):
         for j in range(len(ls[i])-1):
             dict_previous[ls[i][j]] = ls[i][j+1]
         dict_previous[ls[i][len(ls[i])-1]] = -1

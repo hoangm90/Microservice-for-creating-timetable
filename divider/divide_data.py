@@ -4,8 +4,6 @@ def create_subjects_dictionary(lesson_raw):
     subjects["no_subject"] = []
   
     for lesson in lesson_raw:
-        if lesson.get('id') == None:
-            continue
         if lesson.get("subjectName") == None:
             subjects["no_subject"].append(lesson["id"])
         else:
@@ -44,10 +42,12 @@ def divide_data(data):
 
     # create the list that classifies lessons according to subjects
     ls = []
-    ls.append([])
-    for lesson in subjects["no_subject"]:
-        ls[0].append(lesson)
-    i=1
+    i = 0
+    if len(subjects["no_subject"]) > 0:
+        ls.append([])
+        ls[0].append(subjects["no_subject"])
+        i=1
+    
     for sub in subjects:
         if sub == "no_subject":
             continue
@@ -59,32 +59,27 @@ def divide_data(data):
             topic_list.sort(key=sort_helper)
       
             for tp in topic_list:
-                for lesson in subjects[sub][tp]:
-                    ls[i].append(lesson)
+                ls[i].extend(subjects[sub][tp])
             i += 1
     
     # divide the lessons into 2 sets
-    lesson_ids1 = {}
+    lesson_ID_1 = set()
     for i in range(len(ls)):
         n = len(ls[i])//2
         for j in range(n):
-            lesson_ids1[ls[i][j]] = True
-        for j in range(n, len(ls[i])):
-            lesson_ids1[ls[i][j]] = False
+            lesson_ID_1.add(ls[i][j])
     
-    lessons_raw1 = []
-    lessons_raw2 = []
+    lessons_1 = []
+    lessons_2 = []
     for lesson in lessons_raw:
-        if lesson.get("id") == None:
-            continue
-        if lesson_ids1.get(lesson["id"]):
-            lessons_raw1.append(lesson)
+        if lesson["id"] in lesson_ID_1:
+            lessons_1.append(lesson)
         else:
-            lessons_raw2.append(lesson)
+            lessons_2.append(lesson)
 
     # first independent set
     input1 = {}
-    input1["events"] = lessons_raw1
+    input1["events"] = lessons_1
     input1["groups"] = data["groups"]
     input1["teachers"] = data["teachers"]
     input1["classrooms"] = data["classrooms"]
@@ -92,10 +87,13 @@ def divide_data(data):
 
     # second independent set
     input2 = {}
-    input2["events"] = lessons_raw2
+    input2["events"] = lessons_2
     input2["groups"] = data["groups"]
     input2["teachers"] = data["teachers"]
     input2["classrooms"] = data["classrooms"]
     input2["order"] = 2
 
+    if len(input1["events"]) == 0:
+        return [input2] 
+    
     return [input1, input2]
