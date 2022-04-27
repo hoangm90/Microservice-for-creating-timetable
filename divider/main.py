@@ -1,9 +1,6 @@
-from unittest import result
 import aiohttp
 import asyncio
-import json
 from fastapi import FastAPI, Request, WebSocket
-from fastapi.middleware.cors import CORSMiddleware
 import divide_data, assemble_data
 import time
 
@@ -12,18 +9,6 @@ import test_input
 serverUrl = 'comparer'
 
 app = FastAPI()
-
-origins = [
-    "*",
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 @app.post('/api/makeplan')
 # use POST method to send data in JSON format to the microservice
