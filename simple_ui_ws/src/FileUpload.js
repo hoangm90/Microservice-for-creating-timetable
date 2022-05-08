@@ -13,17 +13,38 @@ function FileUpload(){
     const calculateTimetable = useCallback((d) => {
         let lessons = d["events"];
         let colors = [];
-        let maxColor = -1;
-        for(let i=0; i <lessons.length; i++){
-            if(lessons[i]['color'] > maxColor){
-                maxColor = lessons[i]['color'];
+        if(lessons.length >= 1){
+            let maxDay = new Date(lessons[0]["dateCode"]);
+            let minDay = new Date(lessons[0]["dateCode"]);
+            for(let i=1; i <lessons.length; i++){
+                let d = new Date(lessons[i]["dateCode"]);
+                if (d > maxDay){
+                    maxDay = d;
+                }
+                if (d < minDay){
+                    minDay = d;
+                }
             }
-        }
-        for(let i=0; i <= maxColor; i++){
-            colors.push([]);
-        }
-        for(let i=0; i <lessons.length; i++){
-            colors[lessons[i]["color"]].push(lessons[i]) ;
+            let numDay = (maxDay-minDay)/1000/3600/24 + 1;
+            for(let i=0; i<numDay; i++){
+                for(let j=0; j<5; j++){
+                    colors.push([]);
+                }
+            }
+            for(let i=0; i <lessons.length; i++){
+                let d = new Date(lessons[i]["dateCode"])
+                let color = ((d-minDay)/1000/3600/24)*5;
+                switch(lessons[i]["startTime"]["hours"]){
+                    case 8: break;
+                    case 9: color += 1; break;
+                    case 11: color += 2; break;
+                    case 14: color += 3; break;
+                    case 16: color += 4; break;
+                }
+                lessons[i]["day"] = d.getDay();
+                colors[color].push(lessons[i]) ;
+            }
+            setLessonColor(colors);
         }
         setLessonColor(colors);
     }, []);

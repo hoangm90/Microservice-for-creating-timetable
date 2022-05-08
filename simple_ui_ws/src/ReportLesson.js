@@ -31,7 +31,7 @@ function ReportLesson(props){
                     let chosenC = false;
                     let chosenG = false;
                     let chosenT = false;
-                    if(selectedClassroom.current === "all" || selectedClassroom.current === String(lesson["chosenClassroomId"]))
+                    if(selectedClassroom.current === "all" || selectedClassroom.current === String(lesson["classroomsIds"][0]))
                     {
                         chosenC = true;
                     }

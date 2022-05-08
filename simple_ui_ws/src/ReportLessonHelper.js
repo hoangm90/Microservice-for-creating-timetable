@@ -11,7 +11,18 @@ function ReportLessonHelper(props){
         let childtable = [];
         for(let j=0; j<lessons[i].length; j++){
             let lesson = lessons[i][j];
-            let startTime, endTime, occurringTime;
+            let startTime, endTime, occurringTime, dayInWeek;
+            let d = new Date()
+
+            switch(lesson["day"]){
+                case 0: dayInWeek="Sunday"; break;
+                case 1: dayInWeek="Monday"; break;
+                case 2: dayInWeek="Tuesday"; break;
+                case 3: dayInWeek="Wednesday"; break;
+                case 4: dayInWeek="Thursday"; break;
+                case 5: dayInWeek="Friday"; break;
+                case 6: dayInWeek="Saturday"; break;
+            }
             
             startTime = lesson["startTime"]["hours"].toString() + ":";
             if(lesson["startTime"]["minutes"] === 0){
@@ -37,6 +48,8 @@ function ReportLessonHelper(props){
             item.push(<strong key="topic">{lesson["topic"]}</strong>);
             item.push(<br key={"t"}></br>);
             item.push(<strong key="time">{occurringTime}</strong>);
+            item.push(<br key={"da"}></br>);
+            item.push(<strong key="day">{dayInWeek}</strong>);
             item.push(<br key={"d"}></br>);
             item.push(<strong key="date">{lesson["dateCode"]}</strong>);
             if(lesson["teachersNames"].length > 0){

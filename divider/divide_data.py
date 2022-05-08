@@ -45,7 +45,7 @@ def divide_data(data):
     i = 0
     if len(subjects["no_subject"]) > 0:
         ls.append([])
-        ls[0].append(subjects["no_subject"])
+        ls[0].extend(subjects["no_subject"])
         i=1
     
     for sub in subjects:

@@ -2,7 +2,6 @@ import aiohttp
 import asyncio
 from fastapi import FastAPI, Request, WebSocket
 import divide_data, assemble_data
-import time
 
 import test_input
 
@@ -18,9 +17,7 @@ async def compute(request: Request = None):
     input = await request.json()
     
     # call to planning function
-    start_time = time.time()
     result = await timetable_planning(input)
-    print("Time: ", time.time() - start_time)
 
     # return results
     return result
@@ -35,9 +32,7 @@ async def websocket_endpoint(websocket: WebSocket):
             input = await websocket.receive_json()
 
             # call to planning function
-            start_time = time.time()
             result = await timetable_planning(input)
-            print("Time: ", time.time() - start_time)
 
             # return results
             await websocket.send_json(result)
@@ -56,7 +51,6 @@ async def timetable_planning(input):
             async with aiohttp.ClientSession() as session:
                 async with session.get(f'http://{serverUrl}:8000/api/makeplan/', json=input) as resp:
                     return await resp.json() 
-
         # ask services for a solution
         queries = [fetch(input) for input in inputs]
 

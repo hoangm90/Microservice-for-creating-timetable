@@ -1,5 +1,4 @@
 from typing import Optional
-from unittest import result
 import color_time
 
 def attach_timeslots_to_lessons(jsons: dict, start_date: Optional[dict] = None):
@@ -13,6 +12,7 @@ def attach_timeslots_to_lessons(jsons: dict, start_date: Optional[dict] = None):
         lesson["endTime"] = time_slot["endTime"]
         lesson["dateCode"] = time_slot["dateCode"]
         lesson["date"] = time_slot["date"]
+        lesson.pop('color', None)
     
     result = {}
     result['events'] = lessons
@@ -44,5 +44,5 @@ def assemble_lessons(jsons1: dict, jsons2: dict, start_date: Optional[dict] = No
     
     result = attach_timeslots_to_lessons(jsons1, start_date)
     
-    print("Number of color:", num_color1 + num_color2)
+    print("Number of colors:", num_color1 + num_color2)
     return result

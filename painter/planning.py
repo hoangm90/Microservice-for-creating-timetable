@@ -61,4 +61,5 @@ def graph_coloring(subjects, lessons, classrooms, adj_dict):
   return resp
 
 def coloring(subjects, lessons, groups, teachers, classrooms, adj_dict):
-    return graph_coloring(subjects, lessons, classrooms, adj_dict)
+  return graph_coloring(subjects, lessons, classrooms, adj_dict)
+      

@@ -30,10 +30,13 @@ def create_lessons_dictionary(lessons_raw):
     # create the dictionary that the keys are lesson IDs
     lessons = {}
 
-    for lesson_raw in lessons_raw:
-        if lesson_raw.get('id') == None:
-            continue
+    # create teacher and group dictionaries that have each key is ID of 1 teacher (group) 
+    # and value is list of lectures belong to that teacher (group),
+    # those dictionaries help to create graph faster
+    teachers = {}
+    groups = {}
 
+    for lesson_raw in lessons_raw:
         lesson_id = lesson_raw.get('id')
         current_lesson = {}
         lessons[lesson_id] = current_lesson
@@ -44,47 +47,41 @@ def create_lessons_dictionary(lessons_raw):
         # save the information about the teachers that must present to the dictionary
         for teacher_id in lesson_raw.get("teachersIds"):
             current_lesson['teacherIDs'].append(teacher_id)
+            if teachers.get(teacher_id) == None:
+                teachers[teacher_id] = []
+            teachers[teacher_id].append(lesson_id)
         # save the information about the groups of students that must present to the dictionary  
         for group_id in lesson_raw.get('groupsIds'):
             current_lesson['groupIDs'].append(group_id)
+            if groups.get(group_id) == None:
+                groups[group_id] = []
+            groups[group_id].append(lesson_id)
         # save the classrooms for this lesson to the dictionary
         for classroom_id in lesson_raw.get('classroomsIds'):
             current_lesson['classroomIDs'].append(classroom_id)     
-    return lessons
+    return lessons, teachers, groups
 ######################################################################
-def create_graph(lessons, lessons_raw):
+def create_graph(lessons, lessons_raw, teachers, groups):
     # create the adjacent graph representing the relationship between lessons
     G = nx.Graph()
 
     for lesson_id in lessons:
         G.add_node(lesson_id)
 
-    for i in range(len(lessons_raw)-1):
-        lesson_i = lessons_raw[i]
+    # add edge between lessons that have the same teacher
+    for teacher_id in teachers:
+        lesson_list = teachers[teacher_id]
+        for i in range(len(lesson_list)-1):
+            for j in range(i+1, len(lesson_list)):
+                G.add_edge(lesson_list[i], lesson_list[j])
 
-        teachers_ids = {}
-        for teacher_id in lesson_i["teachersIds"]:
-            teachers_ids[teacher_id] = True
+    # add edge between lessons that have the same group
+    for group_id in groups:
+        lesson_list = groups[group_id]
+        for i in range(len(lesson_list)-1):
+            for j in range(i+1, len(lesson_list)):
+                G.add_edge(lesson_list[i], lesson_list[j])
                 
-        groups_ids = {}
-        for group_id in lesson_i["groupsIds"]:
-            groups_ids[group_id] = True
-                  
-        for j in range(i+1, len(lessons_raw)):
-            lesson_j = lessons_raw[j]
-
-            isConnected = False
-            for teacher_id in lesson_j["teachersIds"]:
-                if teachers_ids.get(teacher_id):
-                    G.add_edge(lesson_i["id"], lesson_j["id"])
-                    isConnected = True
-                    break
-            if not isConnected:
-                for group_id in lesson_j["groupsIds"]:
-                    if groups_ids.get(group_id):
-                        G.add_edge(lesson_i["id"], lesson_j["id"])
-                        isConnected = True
-                        break
     return G
 ################################################################################################
 def create_adjacent_dictionary(G):
@@ -100,7 +97,7 @@ def create_adjacent_dictionary(G):
 def return_needed_input(data):
     # create needed input for Painter
     lessons_raw = data["events"]
-    lessons = create_lessons_dictionary(lessons_raw)
+    lessons, teachers, groups = create_lessons_dictionary(lessons_raw)
     
     result = {}
     result["subjects"] = create_subjects_dictionary(lessons_raw)
@@ -109,7 +106,7 @@ def return_needed_input(data):
     result["teachers"] = data["teachers"]
     result["classrooms"] = data["classrooms"]
 
-    G = create_graph(lessons, lessons_raw)
+    G = create_graph(lessons, lessons_raw, teachers, groups)
     result["graph"] = create_adjacent_dictionary(G)
 
     return result

@@ -24,19 +24,21 @@ def color_to_time(num_color: int, start_date: Optional[dict] = None):
         day = datetime.date(start_date["year"], start_date["month"], start_date["day"])
     else:
         day = datetime.date(2021, 10, 1)   
-    day -= datetime.timedelta(days = 1)
+    
+    nth_slot = 0 # ordinal number of the timeslot in day
 
     for i in range(num_color):
-        if i%5 == 0:
-            # i%5 = 0 indicates that this timeslot is the first timeslot of the next day
+        if nth_slot == 5 or (day.strftime("%w") == '5' and nth_slot == 3):
+            # each day from Monday to Thursday has at most 5 timeslots
+            # Friday has at most 3 timeslots
             day += datetime.timedelta(days = 1)
-
+            nth_slot = 0
             while day.strftime("%w") == '0' or day.strftime("%w") == '6' or is_holiday(day):
                 # increase the day to avoid holiday and weekend
                 day += datetime.timedelta(days = 1)
         
-        start_time = hours[i%5][0]
-        end_time = hours[i%5][1]
+        start_time = hours[nth_slot][0]
+        end_time = hours[nth_slot][1]
         date = {"day": int(day.day), "month": int(day.month), "year": int(day.year)}
         date_code = str(day)
         time_slot = {
@@ -45,6 +47,7 @@ def color_to_time(num_color: int, start_date: Optional[dict] = None):
             "dateCode": date_code,
             "date": date,
         }
+        nth_slot += 1
         
         color_time.append(time_slot)
     return color_time

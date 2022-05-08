@@ -1,6 +1,5 @@
 import aiohttp
 import asyncio
-
 from fastapi import FastAPI, Request
 import provide_needed_input, add_color_to_lecture       
 
@@ -32,30 +31,25 @@ async def getResults(count, input):
  
     # ask count times for solutions
     queries = [fetch() for index in range(count)]
- 
+  
     # retrieve JSONs
     jsons = await asyncio.gather(*queries)
 
     # pick up the best solution from given
     best_colors = None
     chosen_classrooms = None
-    best_max_colors = -1
+    best_max_color = -1
     for item in jsons:
         colors = item['colors']
         max_color = item['max_color']
         chosen_cl = item["chosen_classrooms"]
 
-        if best_max_colors == -1:
-            best_max_colors = max_color
-            best_colors = colors
-            chosen_classrooms = chosen_cl
-        elif max_color < best_max_colors:
-            best_max_colors = max_color
+        if max_color < best_max_color or best_max_color == -1:
+            best_max_color = max_color
             best_colors = colors
             chosen_classrooms = chosen_cl
 
-    # add the best coloring to lectures
-    bestResult = add_color_to_lecture.return_planned_timetables(input, best_colors, chosen_classrooms, best_max_colors)
+    bestResult = add_color_to_lecture.return_planned_timetables(input, best_colors, chosen_classrooms, best_max_color)
 
     # return the best result
     return bestResult
