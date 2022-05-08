@@ -61,7 +61,7 @@ def create_lessons_dictionary(lessons_raw):
             current_lesson['classroomIDs'].append(classroom_id)     
     return lessons, teachers, groups
 ######################################################################
-def create_graph(lessons, lessons_raw, teachers, groups):
+def create_graph(lessons, teachers, groups):
     # create the adjacent graph representing the relationship between lessons
     G = nx.Graph()
 
