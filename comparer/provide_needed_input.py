@@ -106,7 +106,7 @@ def return_needed_input(data):
     result["teachers"] = data["teachers"]
     result["classrooms"] = data["classrooms"]
 
-    G = create_graph(lessons, lessons_raw, teachers, groups)
+    G = create_graph(lessons, teachers, groups)
     result["graph"] = create_adjacent_dictionary(G)
 
     return result
