@@ -19,7 +19,9 @@ def create_subjects_dictionary(lesson_raw):
                 current_subject["no_topic"].append(lesson["id"])
             else:
                 topic = lesson["topic"]
-                if topic[0] < "0" or topic[0] > "9":
+                if topic == "":
+                    topic = "0."
+                elif topic[0] < "0" or topic[0] > "9":
                     topic = "0" + topic
                 if current_subject.get(topic) == None:
                     current_subject[topic] = []
