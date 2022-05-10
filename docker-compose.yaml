@@ -8,6 +8,7 @@ services:
       - 5003:80
     depends_on:
       - divider
+      - js
 
   divider:
     image: divider
@@ -27,3 +28,8 @@ services:
     image: painter
     build:
       context: ./painter
+
+  js:
+    image: js
+    build:
+      context: ./simple_ui_post

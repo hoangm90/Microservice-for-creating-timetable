@@ -9,7 +9,7 @@ serverUrl = 'comparer'
 
 app = FastAPI()
 
-@app.post('/api/makeplan')
+@app.post('/makeplan')
 # use POST method to send data in JSON format to the microservice
 async def compute(request: Request = None):
     
@@ -22,7 +22,7 @@ async def compute(request: Request = None):
     # return results
     return result
 
-@app.websocket('/api/ws')
+@app.websocket('/ws')
 # use WebSocket to send data in JSON format to the microservice
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()

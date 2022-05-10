@@ -12,7 +12,6 @@ function ReportLessonHelper(props){
         for(let j=0; j<lessons[i].length; j++){
             let lesson = lessons[i][j];
             let startTime, endTime, occurringTime, dayInWeek;
-            let d = new Date()
 
             switch(lesson["day"]){
                 case 0: dayInWeek="Sunday"; break;
