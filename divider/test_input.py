@@ -144,20 +144,16 @@ def test_input(input: dict):
                 # check for valid subject and topic, if those fields are included
                 if lesson.get("subjectId") != None:
                     if type(lesson["subjectId"]) is not int and type(lesson["subjectId"]) is not str:
-                        print("ttttt")
                         return False, error_string
                 if lesson.get("subjectName") != None:
                     if type(lesson["subjectName"]) is not int and type(lesson["subjectName"]) is not str:
-                        print("tttta")
                         return False, error_string
                 
                 if lesson.get("topicId") != None:
                     if type(lesson["topicId"]) is not int and type(lesson["topicId"]) is not str:
-                        print("ssss")
                         return False, error_string
                 if lesson.get("topic") != None:
                     if type(lesson["topic"]) is not int and type(lesson["topic"]) is not str:
-                        print("sssa")
                         return False, error_string
             except Exception as e:
                 print(e)

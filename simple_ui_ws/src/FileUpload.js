@@ -44,7 +44,7 @@ function FileUpload(){
                 lessons[i]["day"] = d.getDay();
                 colors[color].push(lessons[i]) ;
             }
-            setLessonColor(colors);
+           
         }
         setLessonColor(colors);
     }, []);
