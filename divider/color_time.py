@@ -1,10 +1,12 @@
 import datetime
+import holidays
 from typing import Optional
 
 def is_holiday(day: datetime.date):
     # return true if the given day falls into a holiday
-    holiday_set = {"23-12", "24-12", "25-12", "26-12", "27-12", "28-12", "29-12", "30-12", "31-12", "1-1",
-                    "1-5", "8-5", "5-7", "6-7", "28-9", "28-10", "17-11"}
+    if day in holidays.CZ():
+        return True
+    holiday_set = {"23-12", "24-12", "25-12", "26-12", "27-12", "28-12", "29-12", "30-12", "31-12"}
     day_month = day.strftime("%d") + "-" + day.strftime("%m")
     return (day_month in holiday_set)
 
