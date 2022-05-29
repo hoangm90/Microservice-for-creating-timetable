@@ -1,6 +1,7 @@
 # Microservice-for-creating-timetable
 The source code for a microservice using graph coloring algorithm to create timetables
 
+Adresa URL jednoduchého uživatelského rozhraní je „http://127.0.0.1:5003/“
 Způsob připojení k serveru:
 + metodou POST přes cestu „/api/makeplan“
 + prostřednictvím WebSocket přes cestu „/api/ws“
