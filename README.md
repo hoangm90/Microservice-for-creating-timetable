@@ -1,7 +1,7 @@
 # Microservice-for-creating-timetable
 The source code for a microservice using graph coloring algorithm to create timetables
 
-Mikroslužbu spustíme příkazem „docker-compose up“<br/><br/>
+Mikroslužbu spustíme příkazem „docker-compose up“ v rozhraní příkazového řádku<br/><br/>
 Adresa URL jednoduchého uživatelského rozhraní je „http://127.0.0.1:5003/“ <br/><br/>
 Způsob připojení k serveru:
 + metodou POST přes cestu „/api/makeplan“
