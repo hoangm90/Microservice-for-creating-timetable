@@ -46,7 +46,13 @@ async def timetable_planning(input):
     if is_right:
         # calculating the timetable if the input is valid
         # now divide the input into parts (two in this case)
-        inputs = divide_data.divide_data(input)
+        # inputs = divide_data.divide_data(input)
+
+        # comment the line "inputs = divide_data.divide_data(input)",
+        # and uncomment the line "inputs = [input]" to bypass the data division,
+        # and plan the whole input data set at once as a whole, instead of 2 independent parts 
+        inputs = [input]
+
         async def fetch(input):
             async with aiohttp.ClientSession() as session:
                 async with session.get(f'http://{serverUrl}:8000/api/makeplan/', json=input) as resp:

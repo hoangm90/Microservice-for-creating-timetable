@@ -20,6 +20,8 @@ def attach_timeslots_to_lessons(jsons: dict, start_date: Optional[dict] = None):
     result["groups"] = jsons["groups"]
     result["classrooms"] = jsons["classrooms"]
 
+    print("Number of colors:", num_color)
+
     return result
 
 def assemble_lessons(jsons1: dict, jsons2: dict, start_date: Optional[dict] = None):
@@ -44,5 +46,4 @@ def assemble_lessons(jsons1: dict, jsons2: dict, start_date: Optional[dict] = No
     
     result = attach_timeslots_to_lessons(jsons1, start_date)
     
-    print("Number of colors:", num_color1 + num_color2)
     return result
